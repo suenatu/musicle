@@ -30,6 +30,7 @@ RUN sudo amazon-linux-extras install golang1.11 -y
 RUN yum -y repolist
 RUN curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
 RUN yum -y install --enablerepo=nodesource nodejs
+RUN npm install vue
 # RUN yum -y install nodejs
 # RUN yum -y install npm
 
