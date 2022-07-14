@@ -19,6 +19,10 @@
     1. ターミナルを起動(Ubuntu)  
     2. コンテナに入る  
     3. コンテナの停止  
+  
+
+### Mac
+
 
 ### Dockerコマンド
 - Dockerfileからimageをbuildする  
@@ -29,7 +33,8 @@ e.g.) `$ docker build -t musicle_server_image ./`
     `$ docker-compose up -d`
     - 単数コンテナの場合  
     `$ docker run --name <コンテナの名前> -it <イメージの名前> /bin/bash`  
-    e.g.) `$docker run --name musicle_server -it musicle_server_image /bin/bash`
+    e.g.) `$docker run --name musicle_server -it musicle_server_image /bin/bash`  
+    e.g.) `docker run -it --rm --name musicle_server musicle_server_image` (コンテナを停止した時にコンテナを消してくれる)  
 - コンテナの起動  
 `$ docker start <CONTAINER ID>`  
 `$ docker exec -it <CONTAINER ID>/<NAME> bash`
@@ -60,3 +65,14 @@ e.g.) `$ docker build -t musicle_server_image ./`
 - [Ubuntu起動後、仮想化がうまくいってないときのエラーへの解決方法1(Error: 0x80370102)](https://camedphone.com/archives/1316)  
 - [Ubuntu起動後、仮想化がうまくいってませんっていうエラーへの解決方法2(Error: 0x80370102)](https://docs.microsoft.com/en-us/windows/wsl/troubleshooting#error-0x80370102-the-virtual-machine-could-not-be-started-because-a-required-feature-is-not-installed)  
 - [Dockerコンテナにphpとかnpmをインストール](https://tsyama.hatenablog.com/entry/docker-not-found-npm)  
+
+***  
+
+## Windows - Docker間ファイル共有
+### Windows→Docker
+1. エクスプローラー起動
+2. パス欄に「\\wsl$」を入力
+3. Dockerを選択
+### Linux→Windows
+1. /mnt/c/xxx... or /mnt/d/xxx... (Windows側の見たいファイルのディレクトリまでのパスを記述)
+2. 

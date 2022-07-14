@@ -21,6 +21,9 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && sudo ./aws/install
 
 # create user
+# ENV user contuser1
+# RUN useradd "contuser1" -u 1000 -m -d /home/${user} ${user}\
+#     && chown -R ${user} /home/${user} >> /etc/sudoers
 RUN useradd "ec2-user" && echo "ec2-user ALL=NOPASSWD: ALL" >> /etc/sudoers
 
 # install for develop, etc.
@@ -30,7 +33,6 @@ RUN sudo amazon-linux-extras install golang1.11 -y
 RUN yum -y repolist
 RUN curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
 RUN yum -y install --enablerepo=nodesource nodejs
-RUN npm install vue
 # RUN yum -y install nodejs
 # RUN yum -y install npm
 
