@@ -22,5 +22,9 @@
     <!-- Scripts -->
     <script src="{{ mix('/js/app.js') }}" defer></script>
 </body>
-
+<style>
+    body {
+        background-color: #f5f6f6;
+    }
+</style>
 </html>

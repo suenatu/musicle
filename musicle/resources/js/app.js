@@ -1,6 +1,7 @@
 import VueRouter from 'vue-router';
 import HeaderComponent from "./components/HeaderComponent";
 import UserListComponent from "./components/UserListComponent";
+import ProfileComponent from "./components/ProfileComponent";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -19,8 +20,13 @@ const router = new VueRouter({
     routes: [
         {
             path: '/users',
-            name: 'user.list',
+            name: 'user',
             component: UserListComponent
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: ProfileComponent
         }
     ]
 });
