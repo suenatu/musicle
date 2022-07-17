@@ -8,12 +8,7 @@
             <label>パスワード</label>
             <input type="password" class="form-control" v-model="password" />
         </div>
-        <div class="form-group">
-            <label>
-                <input type="checkbox" v-model="remember" /> 次回から省略
-            </label>
-        </div>
-        <button type="button" class="btn btn-dark btn-block" @click="login">
+        <button type="button" class="btn btn-dark" @click="login">
             ログイン
         </button>
     </div>
@@ -22,24 +17,28 @@
 <script>
 export default {
     data: function () {
-        return {};
+        return {
+            email: null,
+            password: null,
+        };
     },
     methods: {
-        login: function () {
-            var url = "/api/login";
-            var params = {
-                email: this.email,
-                password: this.password,
-                remember: this.remember,
-            };
-            axios
-                .post(url, params)
-                .then(function (response) {
-                    // ログイン成功
-                })
-                .catch(function (error) {
-                    // ログイン失敗
-                });
+        login() {
+            axios.get("/sanctum/csrf-cookie").then((response) => {
+                axios
+                    .post("/api/login", {
+                        email: this.email,
+                        password: this.password,
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        localStorage.setItem("auth", "ture");
+                        this.$router.push("/home");
+                    })
+                    .catch((error) => {
+                        this.errors = error.response.data.errors;
+                    });
+            });
         },
     },
 };

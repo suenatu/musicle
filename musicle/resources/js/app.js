@@ -20,25 +20,31 @@ Vue.use(VueRouter);
 const router = new VueRouter({
     mode: 'history',
     routes: [
+        // ログイン認証が必要なページ
         {
             path: '/login',
             name: 'login',
-            component: LoginComponent
+            component: LoginComponent,
+            meta: { guestOnly: true }
         },
-        // {
-        //     path: '/users',
-        //     name: 'user',
-        //     component: UserListComponent
-        // },
         {
             path: '/profile',
             name: 'profile',
-            component: ProfileComponent
+            component: ProfileComponent,
+            meta: { authOnly: true }
         },
+        // ログイン認証が不要なページ
         {
             path: '/home',
             name: 'home',
-            component: HomeComponent
+            component: HomeComponent,
+            meta: { authOnly: true }
+        },
+        {
+            path: '/userlist',
+            name: 'userlist',
+            component: UserListComponent,
+            meta: { authOnly: true }
         },
     ]
 });
@@ -61,6 +67,28 @@ Vue.component('header-component', HeaderComponent);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+function is_login() {
+    return localStorage.getItem("auth");
+}
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.authOnly)) {
+        if (!is_login()) {
+            next("/login");
+        } else {
+            next();
+        }
+    } else if (to.matched.some(record => record.meta.guestOnly)) {
+        if (is_login()) {
+            next("/home");
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
+});
 
 const app = new Vue({
     el: '#app',

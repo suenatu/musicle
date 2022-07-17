@@ -4,8 +4,13 @@
             <nav class="navbar navbar-dark">
                 <span class="navbar-brand mb-0 h1">Musicle</span>
                 <div>
-                    <!-- <button class="btn btn-secondary">List</button>
-                    <button class="btn btn-success">ADD</button> -->
+                    <button
+                        type="button"
+                        class="btn btn-light"
+                        @click="logout"
+                    >
+                        ログアウト
+                    </button>
                 </div>
             </nav>
         </div>
@@ -13,5 +18,23 @@
 </template>
 
 <script>
-export default {};
+export default {
+    methods: {
+        logout() {
+            axios.get("/sanctum/csrf-cookie").then((response) => {
+                axios
+                    .post("/api/logout", {
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        localStorage.removeItem("auth");
+                        this.$router.push("/login");
+                    })
+                    .catch((error) => {
+                        this.errors = error.response.data.errors;
+                    });
+            });
+        },
+    },
+};
 </script>

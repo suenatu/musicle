@@ -27,7 +27,7 @@ export default {
     },
     created: function () {
         axios
-            .get("/api/user")
+            .get("/api/userlist")
             .then((response) => {
                 this.users = response.data;
             })
