@@ -4,6 +4,7 @@ import UserListComponent from "./components/UserListComponent";
 import ProfileComponent from "./components/ProfileComponent";
 import HomeComponent from "./components/HomeComponent";
 import LoginComponent from "./components/LoginComponent";
+import DashboardComponent from "./components/DashboardComponent";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -20,7 +21,13 @@ Vue.use(VueRouter);
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        // ログイン認証が必要なページ
+        // ログイン認証が不要なページ
+        {
+            path: '/dashboard',
+            name: 'dashboard',
+            component: DashboardComponent,
+            meta: { guestOnly: true }
+        },
         {
             path: '/login',
             name: 'login',
@@ -31,9 +38,9 @@ const router = new VueRouter({
             path: '/profile',
             name: 'profile',
             component: ProfileComponent,
-            meta: { authOnly: true }
+            meta: { guestOnly: true }
         },
-        // ログイン認証が不要なページ
+        // ログイン認証が必要なページ
         {
             path: '/home',
             name: 'home',

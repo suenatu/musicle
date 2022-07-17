@@ -21,7 +21,7 @@ use App\Http\Controllers\UserController;
  */
 Route::post('/login', LoginController::class)->name('login');
 Route::post('/logout', LogoutController::class)->name('logout');
-Route::post("/register", [LoginController::class, "register"]);
+// Route::post("/register", [LoginController::class, "register"]);
 
 /**
  * ログイン認証が必要なAPI
