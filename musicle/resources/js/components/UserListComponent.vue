@@ -9,9 +9,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in users" v-bind:key="item.id">
-                    <th scope="row">{{ item.id }}</th>
-                    <td>{{ item.name }}</td>
+                <tr v-for="user in users" v-bind:key="user.id">
+                    <th scope="row">{{ user.id }}</th>
+                    <td><router-link :to="{name: 'profile', params: {id: user.id}}">{{ user.name }}</router-link></td>
                 </tr>
             </tbody>
         </table>
