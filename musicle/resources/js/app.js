@@ -2,6 +2,8 @@ import VueRouter from 'vue-router';
 import HeaderComponent from "./components/HeaderComponent";
 import UserListComponent from "./components/UserListComponent";
 import ProfileComponent from "./components/ProfileComponent";
+import HomeComponent from "./components/HomeComponent";
+import LoginComponent from "./components/LoginComponent";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -19,15 +21,25 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: '/users',
-            name: 'user',
-            component: UserListComponent
+            path: '/login',
+            name: 'login',
+            component: LoginComponent
         },
+        // {
+        //     path: '/users',
+        //     name: 'user',
+        //     component: UserListComponent
+        // },
         {
             path: '/profile',
             name: 'profile',
             component: ProfileComponent
-        }
+        },
+        {
+            path: '/home',
+            name: 'home',
+            component: HomeComponent
+        },
     ]
 });
 

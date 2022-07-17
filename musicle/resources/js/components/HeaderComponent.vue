@@ -4,7 +4,7 @@
             <nav class="navbar navbar-dark">
                 <span class="navbar-brand mb-0 h1">Musicle</span>
                 <div>
-                    <!-- <button class="btn btn-success">List</button>
+                    <!-- <button class="btn btn-secondary">List</button>
                     <button class="btn btn-success">ADD</button> -->
                 </div>
             </nav>
@@ -13,5 +13,5 @@
 </template>
 
 <script>
-    export default {}
+export default {};
 </script>
