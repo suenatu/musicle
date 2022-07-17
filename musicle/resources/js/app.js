@@ -22,18 +22,18 @@ Vue.use(VueRouter);
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        // ログイン認証が不要なページ
+        // 未ログイン時のみ
         {
             path: '/login',
             name: 'login',
             component: LoginComponent,
             meta: { guestOnly: true }
         },
+        // ログイン認証が不要なページ
         {
-            path: '/profile',
+            path: '/profile/:id',
             name: 'profile',
             component: ProfileComponent,
-            meta: { guestOnly: true }
         },
         // ログイン認証が必要なページ
         {

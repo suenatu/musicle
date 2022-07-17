@@ -2,11 +2,8 @@
     <div class="container">
         <div class="row">
             <div class="col-3">
-                <img
-                    class="profile-image"
-                    src="https://ton-log.com/wp-content/uploads/2018/11/s512_f_object_112_0bg.png"
-                />
-                <div class="profile-name">プロフィール名</div>
+                <img class="profile-image" :src="image_path" />
+                <div class="profile-name">{{ name }}</div>
                 <button
                     class="btn btn-primary"
                     type="button"
@@ -29,30 +26,42 @@ export default {
     data: function () {
         return {
             is_follow: false,
+            name: null,
+            image_path: null,
         };
     },
     created: function () {
         // プロフィール取得API
-        axios
-            .get("/api/get_profile")
-            .then((response) => {})
-            .catch((err) => {
-                console.error(err);
-            });
-        //　フォロー状態取得API
-        axios
-            .get("/api/get_is_follow")
-            .then((response) => {})
-            .catch((err) => {
-                console.error(err);
-            });
+        this.get_profile();
     },
-    mounted: function () {},
+    mounted: function () {
+    },
     methods: {
         follow(user_id) {
             console.log("フォローAPI");
             axios
                 .post("/api/follow")
+                .then((response) => {})
+                .catch((err) => {
+                    console.error(err);
+                });
+        },
+        // プロフィール取得API
+        get_profile() {
+            axios
+                .get("/api/get_profile/" + this.$route.params.id)
+                .then((response) => {
+                    this.name = response.data.name;
+                    this.image_path = response.data.image_path;
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        },
+        //　フォロー状態取得API
+        get_follow_status() {
+            axios
+                .get("/api/get_is_follow")
                 .then((response) => {})
                 .catch((err) => {
                     console.error(err);

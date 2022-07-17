@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use GuzzleHttp\Psr7\Request;
 
 class UserController extends Controller
 {
@@ -17,6 +18,18 @@ class UserController extends Controller
                 'name' => $user->name,
             ];
         }
+        return $response;
+    }
+
+    public function get_profile($user_id)
+    {
+        $user = User::find($user_id);
+
+        $response = [
+            'name' => $user->name,
+            'image_path' => $user->image_path
+        ];
+
         return $response;
     }
 }

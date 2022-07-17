@@ -3,12 +3,8 @@
         <div class="container">
             <nav class="navbar navbar-dark">
                 <span class="navbar-brand mb-0 h1">Musicle</span>
-                <div>
-                    <button
-                        type="button"
-                        class="btn btn-light"
-                        @click="logout"
-                    >
+                <div v-if="is_login">
+                    <button type="button" class="btn btn-light" @click="logout">
                         ログアウト
                     </button>
                 </div>
@@ -19,15 +15,20 @@
 
 <script>
 export default {
+    data() {
+        return {
+            is_login: localStorage.getItem("auth"),
+        };
+    },
     methods: {
         logout() {
             axios.get("/sanctum/csrf-cookie").then((response) => {
                 axios
-                    .post("/api/logout", {
-                    })
+                    .post("/api/logout", {})
                     .then((response) => {
                         console.log(response);
                         localStorage.removeItem("auth");
+                        this.is_login = false;
                         this.$router.push("/login");
                     })
                     .catch((error) => {
