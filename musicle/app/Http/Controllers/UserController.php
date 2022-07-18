@@ -30,8 +30,6 @@ class UserController extends Controller
 
     /**
      * ユーザープロフィール情報取得API
-     *
-     * @param integer $login_id
      */
     public function get_profile(string $login_id)
     {
