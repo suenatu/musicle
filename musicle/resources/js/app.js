@@ -1,13 +1,12 @@
 import VueRouter from 'vue-router';
+import store from "./store/index";
 import HeaderComponent from "./components/HeaderComponent";
 import UserListComponent from "./components/UserListComponent";
 import ProfileComponent from "./components/ProfileComponent";
 import HomeComponent from "./components/HomeComponent";
 import LoginComponent from "./components/LoginComponent";
 import DashboardComponent from "./components/DashboardComponent";
-import NotFound from "./components/NotFound";
-
-import store from "./store/index";
+import NotFoundComponent from "./components/NotFoundComponent";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -29,7 +28,7 @@ const router = new VueRouter({
             path: '/login',
             name: 'login',
             component: LoginComponent,
-            // meta: { guestOnly: true }
+            meta: { guestOnly: true }
         },
         // ログイン認証が不要なページ
         {
@@ -60,7 +59,7 @@ const router = new VueRouter({
         {
             path: '*',
             name: 'NotFound',
-            component: NotFound
+            component: NotFoundComponent
         },
     ]
 });
@@ -84,8 +83,16 @@ Vue.component('header-component', HeaderComponent);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+// セッションストレージ情報を保持
+if (sessionStorage.getItem('musicle')) {
+    const strageData = JSON.parse(sessionStorage.getItem('musicle'));
+    if (strageData.auth.is_login) {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + strageData.auth.is_login;
+    }
+}
+
 function is_login() {
-    return localStorage.getItem("auth");
+    return store.getters['auth/is_login']
 }
 
 router.beforeEach((to, from, next) => {

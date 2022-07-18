@@ -1,7 +1,7 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Musicle</a>
+            <a class="navbar-brand" href="/home">musicle</a>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -20,6 +20,7 @@
                             >ダッシュボード</router-link
                         >
                     </li>
+                <div v-if="is_login">
                     <li class="nav-item">
                         <!-- <a
                             class="nav-link active"
@@ -31,6 +32,7 @@
                             >ホーム</router-link
                         >
                     </li>
+                </div>
                     <!-- <li class="nav-item dropdown">
                         <a
                             class="nav-link dropdown-toggle"
@@ -63,24 +65,26 @@
                         </ul>
                     </li> -->
                 </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <router-link to="/myprofile">
-                            <img
-                                :src="image_path"
-                                class="header-profile-image"
-                            />
-                        </router-link>
-                        <!-- <a href="/myprofile">
+                <div v-if="is_login">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <router-link to="/myprofile">
+                                <img
+                                    :src="image_path"
+                                    class="header-profile-image"
+                                />
+                            </router-link>
+                            <!-- <a href="/myprofile">
                         <img class="header-profile-image" :src="image_path" />
                         </a> -->
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/myprofile">{{
-                            name
-                        }}</router-link>
-                    </li>
-                </ul>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/myprofile">{{
+                                name
+                            }}</router-link>
+                        </li>
+                    </ul>
+                </div>
                 <!-- <form class="d-flex">
                     <input
                         class="form-control me-2"
@@ -122,29 +126,45 @@ export default {
     created: function () {
         // ログイン時の処理
         if (this.is_login) {
-            // プロフィール取得
+            // // プロフィール取得
             this.get_my_profile();
         }
     },
     computed: {
         is_login() {
-            return this.$store.getters['auth/is_login'];
+            return this.$store.getters["auth/is_login"];
         },
     },
     watch: {
         is_login(val, old) {
-            console.log("watch", val);
+            if (val) {
+                // プロフィール取得
+                this.get_my_profile();
+            }
         },
     },
     methods: {
+        // プロフィール情報初期化
+        init_profile() {
+            this.user_id = null;
+            this.name = null;
+            this.image_path = null;
+        },
+        // ログアウトAPI
         logout() {
             axios.get("/sanctum/csrf-cookie").then((response) => {
                 axios
                     .post("/api/logout", {})
                     .then((response) => {
                         console.log(response);
-                        this.$store.dispatch('auth/logout');
+                        // ログイン状態更新
+                        this.$store.dispatch("auth/logout");
+                        // セッションストレージ削除
+                        sessionStorage.removeItem("musicle");
+                        // ログイン画面に遷移
                         this.$router.push("/login");
+                        // プロフィール情報を初期化
+                        this.init_profile();
                     })
                     .catch((error) => {
                         this.errors = error.response.data.errors;
