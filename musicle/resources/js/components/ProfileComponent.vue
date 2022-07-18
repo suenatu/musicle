@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row">
+        <div v-if="is_user" class="row">
             <div class="col-3">
                 <img class="profile-image" :src="image_path" />
                 <div class="profile-name">{{ name }}</div>
@@ -8,19 +8,32 @@
                     <div class="col-6">フォロー: {{ follow_count }}</div>
                     <div class="col-6">フォロワー: {{ follower_count }}</div>
                 </div>
-                <button
-                    class="btn btn-primary"
-                    type="button"
-                    id="follow"
-                    v-on:click="follow"
-                >
-                    フォローする
-                </button>
-                <button class="btn btn-secondary" type="button" id="remove">
-                    フォロー解除する
-                </button>
+                <div v-if="is_login">
+                    <div v-if="is_follow">
+                        <button
+                            class="btn btn-primary"
+                            type="button"
+                            id="follow"
+                            v-on:click="follow"
+                        >
+                            フォローする
+                        </button>
+                    </div>
+                    <div v-else>
+                        <button
+                            class="btn btn-secondary"
+                            type="button"
+                            id="remove"
+                        >
+                            フォロー解除する
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="col-9"></div>
+        </div>
+        <div v-else class="row">
+            <p>ユーザーが見つかりません。</p>
         </div>
     </div>
 </template>
@@ -29,16 +42,23 @@
 export default {
     data: function () {
         return {
+            is_user: true,
             is_follow: false,
             name: null,
             image_path: null,
             follow_count: 0,
             follower_count: 0,
+            is_follow: false,
         };
     },
     created: function () {
         // プロフィール取得API
         this.get_profile();
+    },
+    computed: {
+        is_login() {
+            return this.$store.getters["auth/is_login"];
+        },
     },
     mounted: function () {},
     methods: {
@@ -56,10 +76,16 @@ export default {
             axios
                 .get("/api/get_profile/" + this.$route.params.login_id)
                 .then((response) => {
-                    this.name = response.data.name;
-                    this.image_path = response.data.image_path;
-                    this.follow_count = response.data.follow_count;
-                    this.follower_count = response.data.follower_count;
+                    if (response.data.is_user) {
+                        this.is_user = response.data.is_user;
+                        this.name = response.data.name;
+                        this.image_path = response.data.image_path;
+                        this.follow_count = response.data.follow_count;
+                        this.follower_count = response.data.follower_count;
+                        this.is_follow = response.data.is_follow;
+                    } else {
+                        this.is_user = response.data.is_user;
+                    }
                 })
                 .catch((err) => {
                     console.error(err);
