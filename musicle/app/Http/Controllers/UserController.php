@@ -36,6 +36,7 @@ class UserController extends Controller
         $user = User::find($user_id);
 
         $response = [
+            'user_id' => $user->user_id,
             'name' => $user->name,
             'image_path' => $user->image_path
         ];
