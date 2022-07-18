@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Follow;
 use GuzzleHttp\Psr7\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ class UserController extends Controller
         foreach($users as $user) {
             $response[] =[
                 'id' => $user->id,
+                'login_id' => $user->login_id,
                 'name' => $user->name,
             ];
         }
@@ -29,16 +31,21 @@ class UserController extends Controller
     /**
      * ユーザープロフィール情報取得API
      *
-     * @param integer $user_id
+     * @param integer $login_id
      */
-    public function get_profile(int $user_id)
+    public function get_profile(string $login_id)
     {
-        $user = User::find($user_id);
+        $user = User::where('login_id', $login_id)->first();
+
+        $follows = Follow::where('followee_user_id', $user->id)->get();
+        $followers = Follow::where('follower_user_id', $user->id)->get();
 
         $response = [
             'user_id' => $user->user_id,
             'name' => $user->name,
-            'image_path' => $user->image_path
+            'image_path' => $user->image_path,
+            'follow_count' => count($follows),
+            'follower_count' => count($followers),
         ];
 
         return $response;

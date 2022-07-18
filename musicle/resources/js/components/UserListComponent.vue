@@ -5,13 +5,15 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">ID</th>
+                    <th scope="col">ログインID</th>
                     <th scope="col">ユーザー名</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="user in users" v-bind:key="user.id">
                     <th scope="row">{{ user.id }}</th>
-                    <td><router-link :to="{name: 'profile', params: {id: user.id}}">{{ user.name }}</router-link></td>
+                    <td>{{ user.login_id }}</td>
+                    <td><router-link :to="{name: 'profile', params: {login_id: user.login_id}}">{{ user.name }}</router-link></td>
                 </tr>
             </tbody>
         </table>

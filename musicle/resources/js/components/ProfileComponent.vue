@@ -4,6 +4,10 @@
             <div class="col-3">
                 <img class="profile-image" :src="image_path" />
                 <div class="profile-name">{{ name }}</div>
+                <div class="row">
+                    <div class="col-6">フォロー: {{ follow_count }}</div>
+                    <div class="col-6">フォロワー: {{ follower_count }}</div>
+                </div>
                 <button
                     class="btn btn-primary"
                     type="button"
@@ -28,14 +32,15 @@ export default {
             is_follow: false,
             name: null,
             image_path: null,
+            follow_count: 0,
+            follower_count: 0,
         };
     },
     created: function () {
         // プロフィール取得API
         this.get_profile();
     },
-    mounted: function () {
-    },
+    mounted: function () {},
     methods: {
         follow(user_id) {
             console.log("フォローAPI");
@@ -49,10 +54,12 @@ export default {
         // プロフィール取得API
         get_profile() {
             axios
-                .get("/api/get_profile/" + this.$route.params.id)
+                .get("/api/get_profile/" + this.$route.params.login_id)
                 .then((response) => {
                     this.name = response.data.name;
                     this.image_path = response.data.image_path;
+                    this.follow_count = response.data.follow_count;
+                    this.follower_count = response.data.follower_count;
                 })
                 .catch((err) => {
                     console.error(err);

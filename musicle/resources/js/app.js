@@ -32,7 +32,7 @@ const router = new VueRouter({
         },
         // ログイン認証が不要なページ
         {
-            path: '/profile/:id',
+            path: '/profile/:login_id',
             name: 'profile',
             component: ProfileComponent,
         },
