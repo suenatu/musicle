@@ -36,17 +36,16 @@ const router = new VueRouter({
             name: 'profile',
             component: ProfileComponent,
         },
+        {
+            path: '/userlist',
+            name: 'userlist',
+            component: UserListComponent,
+        },
         // ログイン認証が必要なページ
         {
             path: '/home',
             name: 'home',
             component: HomeComponent,
-            meta: { authOnly: true }
-        },
-        {
-            path: '/userlist',
-            name: 'userlist',
-            component: UserListComponent,
             meta: { authOnly: true }
         },
         // dashboard

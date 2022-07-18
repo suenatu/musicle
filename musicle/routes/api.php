@@ -27,7 +27,11 @@ Route::post('logout', LogoutController::class)->name('logout');
  * ログイン認証が必要なAPI
  */
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('userlist', [UserController::class, 'index']);
     Route::get('get_profile/{id}', [UserController::class, 'get_profile']);
     Route::get('get_my_profile', [UserController::class, 'get_my_profile']);
 });
+
+/**
+ * データ確認用
+ */
+Route::get('userlist', [UserController::class, 'index']);
