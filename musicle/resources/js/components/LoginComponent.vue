@@ -1,12 +1,12 @@
 <template>
     <div class="container">
-        <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" v-model="email" />
+        <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input id="email" type="text" class="form-control" v-model="email" />
         </div>
-        <div class="form-group">
-            <label>パスワード</label>
-            <input type="password" class="form-control" v-model="password" />
+        <div class="form-group mb-3">
+            <label for="password">パスワード</label>
+            <input id="password" type="password" class="form-control" v-model="password" />
         </div>
         <button type="button" class="btn btn-dark" @click="login">
             ログイン
