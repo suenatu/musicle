@@ -7,6 +7,8 @@ import LoginComponent from "./components/LoginComponent";
 import DashboardComponent from "./components/DashboardComponent";
 import NotFound from "./components/NotFound";
 
+import store from "./store/index";
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -27,7 +29,7 @@ const router = new VueRouter({
             path: '/login',
             name: 'login',
             component: LoginComponent,
-            meta: { guestOnly: true }
+            // meta: { guestOnly: true }
         },
         // ログイン認証が不要なページ
         {
@@ -106,5 +108,6 @@ router.beforeEach((to, from, next) => {
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    store
 });

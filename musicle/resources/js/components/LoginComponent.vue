@@ -22,6 +22,8 @@ export default {
             password: null,
         };
     },
+    created: function () {
+    },
     methods: {
         login() {
             axios.get("/sanctum/csrf-cookie").then((response) => {
@@ -32,7 +34,7 @@ export default {
                     })
                     .then((response) => {
                         console.log(response);
-                        localStorage.setItem("auth", "ture");
+                        this.$store.dispatch('auth/login');
                         this.$router.push("/home");
                     })
                     .catch((error) => {

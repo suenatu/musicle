@@ -93,7 +93,10 @@
                     </button>
                 </form> -->
                 <div v-if="is_login">
-                    <button class="btn btn-sm btn-outline-secondary" @click="logout">
+                    <button
+                        class="btn btn-sm btn-outline-secondary"
+                        @click="logout"
+                    >
                         ログアウト
                     </button>
                 </div>
@@ -111,14 +114,27 @@
 export default {
     data() {
         return {
-            is_login: localStorage.getItem("auth"),
             user_id: null,
             name: null,
             image_path: null,
         };
     },
     created: function () {
-        this.get_my_profile();
+        // ログイン時の処理
+        if (this.is_login) {
+            // プロフィール取得
+            this.get_my_profile();
+        }
+    },
+    computed: {
+        is_login() {
+            return this.$store.getters['auth/is_login'];
+        },
+    },
+    watch: {
+        is_login(val, old) {
+            console.log("watch", val);
+        },
     },
     methods: {
         logout() {
@@ -127,8 +143,7 @@ export default {
                     .post("/api/logout", {})
                     .then((response) => {
                         console.log(response);
-                        localStorage.removeItem("auth");
-                        this.is_login = false;
+                        this.$store.dispatch('auth/logout');
                         this.$router.push("/login");
                     })
                     .catch((error) => {
