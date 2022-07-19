@@ -32,7 +32,7 @@ class UserController extends Controller
             );
         } catch (\Throwable $th) {
             return response()->json(
-                [],
+                ['error' => ['code' => '', 'message' => $th->getMessage()]],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -67,7 +67,7 @@ class UserController extends Controller
             );
         } catch (\Exception $th) {
             return response()->json(
-                [],
+                ['error' => ['code' => '', 'message' => $th->getMessage()]],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -91,7 +91,7 @@ class UserController extends Controller
             );
         } catch (\Throwable $th) {
             return response()->json(
-                [],
+                ['error' => ['code' => '', 'message' => $th->getMessage()]],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }

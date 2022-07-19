@@ -55,7 +55,7 @@ class Follow extends Model
     /**
      * フォロー
      */
-    public static function follow(int $user_id, int $target_user_id)
+    public static function follow(int $user_id, int $target_user_id): bool
     {
         $follow = new self;
         $follow->user_id = $user_id;
@@ -69,7 +69,7 @@ class Follow extends Model
     /**
      * フォロー解除
      */
-    public static function remove(int $user_id, int $target_user_id)
+    public static function remove(int $user_id, int $target_user_id): bool
     {
         $follow = self::where(['user_id' => $user_id, 'target_user_id' => $target_user_id])->first();
         if (isset($follow)) {

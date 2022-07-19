@@ -15,16 +15,16 @@ class FollowController extends Controller
     {
         try {
             $target_user_id = $request->input('user_id');
+            Follow::follow(auth()->user()->id, $target_user_id);
             return response()->json(
                 [
-                    'result' => Follow::follow(auth()->user()->id, $target_user_id),
                     'follower_count' => Follow::get_follower_count($target_user_id),
                 ],
                 Response::HTTP_OK
             );
         } catch (\Exception $th) {
             return response()->json(
-                [],
+                ['error' => ['code' => '', 'message' => $th->getMessage()]],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -37,16 +37,16 @@ class FollowController extends Controller
     {
         try {
             $target_user_id = $request->input('user_id');
+            Follow::remove(auth()->user()->id, $target_user_id);
             return response()->json(
                 [
-                    'result' => Follow::remove(auth()->user()->id, $target_user_id),
                     'follower_count' => Follow::get_follower_count($target_user_id),
                 ],
                 Response::HTTP_OK
             );
         } catch (\Exception $th) {
             return response()->json(
-                [],
+                ['error' => ['code' => '', 'message' => $th->getMessage()]],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
