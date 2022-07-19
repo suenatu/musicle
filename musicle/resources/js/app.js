@@ -112,6 +112,18 @@ router.beforeEach((to, from, next) => {
     }
 });
 
+// 401でログインページにリダイレクト
+axios.interceptors.response.use(function (response) {
+    return response
+}, function (error) {
+    console.log(error.response.data)
+    if (error.response.status === 401) {
+        store.dispatch('auth/logout')
+        router.push('/login')
+    }
+    return Promise.reject(error)
+})
+
 const app = new Vue({
     el: '#app',
     router,
