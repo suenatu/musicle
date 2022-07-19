@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +28,16 @@ Route::post('logout', LogoutController::class)->name('logout');
  * ログイン認証が必要なAPI
  */
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    // ユーザープロフィール取得API
     Route::get('get_profile/{login_id}', [UserController::class, 'get_profile']);
+
     Route::get('get_my_profile', [UserController::class, 'get_my_profile']);
+
+    // フォローAPI
+    Route::post('follow', [FollowController::class, 'follow']);
+    // リムーブAPI
+    Route::post('remove', [FollowController::class, 'remove']);
+
 });
 
 /**

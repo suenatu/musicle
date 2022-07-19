@@ -11,21 +11,22 @@
                 <div v-if="is_login">
                     <div v-if="is_follow">
                         <button
+                            class="btn btn-secondary"
+                            type="button"
+                            id="remove"
+                            v-on:click="remove"
+                        >
+                            フォロー解除する
+                        </button>
+                    </div>
+                    <div v-else>
+                        <button
                             class="btn btn-primary"
                             type="button"
                             id="follow"
                             v-on:click="follow"
                         >
                             フォローする
-                        </button>
-                    </div>
-                    <div v-else>
-                        <button
-                            class="btn btn-secondary"
-                            type="button"
-                            id="remove"
-                        >
-                            フォロー解除する
                         </button>
                     </div>
                 </div>
@@ -43,6 +44,7 @@ export default {
     data: function () {
         return {
             is_user: true,
+            user_id: null,
             is_follow: false,
             name: null,
             image_path: null,
@@ -62,11 +64,33 @@ export default {
     },
     mounted: function () {},
     methods: {
-        follow(user_id) {
-            console.log("フォローAPI");
+        // フォローAPI
+        follow() {
+            this.is_follow = true;
             axios
-                .post("/api/follow")
-                .then((response) => {})
+                .post("/api/follow", {
+                    user_id: this.user_id
+                })
+                .then((response) => {
+                    this.follower_count = response.data.follower_count;
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        },
+        //　リムーブAPI
+        remove() {
+            if (!confirm('フォローを解除しますか？')) {
+                return;
+            }
+            this.is_follow = false;
+            axios
+                .post("/api/remove", {
+                    user_id: this.user_id
+                })
+                .then((response) => {
+                    this.follower_count = response.data.follower_count;
+                })
                 .catch((err) => {
                     console.error(err);
                 });
@@ -78,6 +102,7 @@ export default {
                 .then((response) => {
                     if (response.data.is_user) {
                         this.is_user = response.data.is_user;
+                        this.user_id = response.data.user_id;
                         this.name = response.data.name;
                         this.image_path = response.data.image_path;
                         this.follow_count = response.data.follow_count;

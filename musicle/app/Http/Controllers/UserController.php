@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
 use App\Models\User;
 use App\Models\Follow;
-use Illuminate\Http\Response;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -15,17 +15,27 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        try {
+            $users = User::all();
 
-        $response = [];
-        foreach ($users as $user) {
-            $response[] = [
-                'id' => $user->id,
-                'login_id' => $user->login_id,
-                'name' => $user->name,
-            ];
+            $response = [];
+            foreach ($users as $user) {
+                $response[] = [
+                    'id' => $user->id,
+                    'login_id' => $user->login_id,
+                    'name' => $user->name,
+                ];
+            }
+            return response()->json(
+                $response,
+                Response::HTTP_OK
+            );
+        } catch (\Throwable $th) {
+            return response()->json(
+                [],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
-        return $response;
     }
 
     /**
@@ -46,7 +56,7 @@ class UserController extends Controller
             return response()->json(
                 [
                     'is_user' => true,
-                    'user_id' => $user->user_id,
+                    'user_id' => $user->id,
                     'name' => $user->name,
                     'image_path' => $user->image_path,
                     'follow_count' => Follow::get_follow_count($user->id),
@@ -56,6 +66,10 @@ class UserController extends Controller
                 Response::HTTP_OK
             );
         } catch (\Exception $th) {
+            return response()->json(
+                [],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -64,13 +78,22 @@ class UserController extends Controller
      */
     public function get_my_profile()
     {
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
 
-        $response = [
-            'name' => $user->name,
-            'image_path' => $user->image_path
-        ];
-
-        return $response;
+            $response = [
+                'name' => $user->name,
+                'image_path' => $user->image_path
+            ];
+            return response()->json(
+                $response,
+                Response::HTTP_OK
+            );
+        } catch (\Throwable $th) {
+            return response()->json(
+                [],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }
