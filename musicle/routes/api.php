@@ -44,3 +44,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
  * データ確認用
  */
 Route::get('userlist', [UserController::class, 'index']);
+

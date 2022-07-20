@@ -7,6 +7,7 @@ import HomeComponent from "./components/HomeComponent";
 import LoginComponent from "./components/LoginComponent";
 import DashboardComponent from "./components/DashboardComponent";
 import NotFoundComponent from "./components/NotFoundComponent";
+import ExampleComponent from "./components/ExampleComponent";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -31,6 +32,11 @@ const router = new VueRouter({
             meta: { guestOnly: true }
         },
         // ログイン認証が不要なページ
+        {
+            path: '/post',
+            name: 'post',
+            component: ExampleComponent,
+        },
         {
             path: '/profile/:login_id',
             name: 'profile',
