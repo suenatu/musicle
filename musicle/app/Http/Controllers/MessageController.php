@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Message;
-use Illuminate\Support\Facades\Auth;
 use App\Events\MessageSent;
+
+use App\Models\Room;
 use App\Models\User;
+use App\Models\Message;
 
 class MessageController extends Controller
 {
@@ -17,21 +18,26 @@ class MessageController extends Controller
 
     public function index()
     {
-        return view('post');
+        return view('message');
     }
 
-    public function fetchMessages()
+    public function fetchMessages(Request $request)
     {
-        return Message::with('user')->get();
+        $messages = Message::where(['room_id' => $request->room_id])
+            ->with('user')->get();
+        return [
+            'user_id' => auth()->user()->id,
+            'messages' => $messages
+        ];
     }
 
     public function sendMessage(Request $request)
     {
-        // $user = Auth::user();
+        $room = Room::find($request->room_id);
         $user = User::find(auth()->user()->id);
-
         $message = $user->messages()->create([
-            'message' => $request->input('message')
+            'room_id' => $request->room_id,
+            'message' => $request->message
         ]);
 
         event(new MessageSent($user, $message));

@@ -8,6 +8,7 @@ import LoginComponent from "./components/LoginComponent";
 import DashboardComponent from "./components/DashboardComponent";
 import NotFoundComponent from "./components/NotFoundComponent";
 import ExampleComponent from "./components/ExampleComponent";
+import MessageComponent from "./components/MessageComponent";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -46,6 +47,11 @@ const router = new VueRouter({
             path: '/userlist',
             name: 'userlist',
             component: UserListComponent,
+        },
+        {
+            path: '/message/:room_id',
+            name: 'message',
+            component: MessageComponent,
         },
         // ログイン認証が必要なページ
         {
