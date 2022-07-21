@@ -190,6 +190,7 @@ export default {
 <style>
 .header-profile-image {
     width: 40px;
+    max-height: 40px;
     border-radius: 5px 5px 5px 5px;
 }
 </style>

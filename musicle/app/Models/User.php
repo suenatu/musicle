@@ -10,4 +10,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasFactory;
+
+    /**
+     * ログインIDからユーザー情報を取得
+     * （TODO: プロフィールテーブルとかくっつけたい）
+     */
+    public static function get_user_by_login_id(string $login_id)
+    {
+        return self::where('login_id', $login_id)->first();
+    }
 }
