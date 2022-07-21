@@ -11,6 +11,11 @@ class User extends Authenticatable
 {
     use HasFactory;
 
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
     /**
      * ログインIDからユーザー情報を取得
      * （TODO: プロフィールテーブルとかくっつけたい）

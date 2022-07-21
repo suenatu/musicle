@@ -7,6 +7,9 @@ import HomeComponent from "./components/HomeComponent";
 import LoginComponent from "./components/LoginComponent";
 import DashboardComponent from "./components/DashboardComponent";
 import NotFoundComponent from "./components/NotFoundComponent";
+import ExampleComponent from "./components/ExampleComponent";
+import MessageComponent from "./components/MessageComponent";
+import MessageListComponent from "./components/MessageListComponent";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -32,6 +35,11 @@ const router = new VueRouter({
         },
         // ログイン認証が不要なページ
         {
+            path: '/post',
+            name: 'post',
+            component: ExampleComponent,
+        },
+        {
             path: '/profile/:login_id',
             name: 'profile',
             component: ProfileComponent,
@@ -41,11 +49,22 @@ const router = new VueRouter({
             name: 'userlist',
             component: UserListComponent,
         },
+        {
+            path: '/message/:room_id',
+            name: 'message',
+            component: MessageComponent,
+        },
         // ログイン認証が必要なページ
         {
             path: '/home',
             name: 'home',
             component: HomeComponent,
+            meta: { authOnly: true }
+        },
+        {
+            path: '/message',
+            name: 'message',
+            component: MessageListComponent,
             meta: { authOnly: true }
         },
         // dashboard

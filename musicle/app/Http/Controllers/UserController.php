@@ -24,6 +24,7 @@ class UserController extends Controller
                     'id' => $user->id,
                     'login_id' => $user->login_id,
                     'name' => $user->name,
+                    'test' => Auth::check()
                 ];
             }
             return response()->json(
