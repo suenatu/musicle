@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Events\MessageSent;
 
-use App\Models\Room;
 use App\Models\User;
 use App\Models\Message;
 
@@ -33,7 +33,6 @@ class MessageController extends Controller
 
     public function sendMessage(Request $request)
     {
-        $room = Room::find($request->room_id);
         $user = User::find(auth()->user()->id);
         $message = $user->messages()->create([
             'room_id' => $request->room_id,

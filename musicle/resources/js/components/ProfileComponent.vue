@@ -19,7 +19,7 @@
                             フォロー解除する
                         </button>
                     </div>
-                    <div v-else>
+                    <div v-if="!is_follow">
                         <button
                             class="btn btn-primary"
                             type="button"
@@ -29,6 +29,13 @@
                             フォローする
                         </button>
                     </div>
+                        <button
+                            class="btn btn-primary"
+                            type="button"
+                            id="direct_message"
+                        >
+                            ダイレクトメッセージ
+                        </button>
                 </div>
             </div>
             <div class="col-9"></div>
@@ -45,12 +52,11 @@ export default {
         return {
             is_user: true,
             user_id: null,
-            is_follow: false,
+            is_follow: null,
             name: null,
             image_path: null,
             follow_count: 0,
             follower_count: 0,
-            is_follow: false,
         };
     },
     created: function () {

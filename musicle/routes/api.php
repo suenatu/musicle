@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\RoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,6 @@ use App\Http\Controllers\FollowController;
  */
 Route::post('login', LoginController::class)->name('login');
 Route::post('logout', LogoutController::class)->name('logout');
-// Route::post("/register", [LoginController::class, "register"]);
 
 /**
  * ログイン認証が必要なAPI
@@ -38,10 +38,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // リムーブAPI
     Route::post('remove', [FollowController::class, 'remove']);
 
+    // ルーム一覧取得API
+    Route::get('get_rooms', [RoomController::class, 'get_rooms']);
 });
 
 /**
  * データ確認用
  */
 Route::get('userlist', [UserController::class, 'index']);
-

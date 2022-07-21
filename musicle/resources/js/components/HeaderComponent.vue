@@ -20,8 +20,7 @@
                             >ダッシュボード</router-link
                         >
                     </li>
-                <div v-if="is_login">
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="is_login">
                         <!-- <a
                             class="nav-link active"
                             aria-current="page"
@@ -32,7 +31,17 @@
                             >ホーム</router-link
                         >
                     </li>
-                </div>
+                    <li class="nav-item" v-if="is_login">
+                        <!-- <a
+                            class="nav-link active"
+                            aria-current="page"
+                            href="/home"
+                            >Home</a
+                        > -->
+                        <router-link class="nav-link" to="/message"
+                            >ダイレクトメッセージ</router-link
+                        >
+                    </li>
                     <!-- <li class="nav-item dropdown">
                         <a
                             class="nav-link dropdown-toggle"

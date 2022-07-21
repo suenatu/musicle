@@ -9,6 +9,7 @@ import DashboardComponent from "./components/DashboardComponent";
 import NotFoundComponent from "./components/NotFoundComponent";
 import ExampleComponent from "./components/ExampleComponent";
 import MessageComponent from "./components/MessageComponent";
+import MessageListComponent from "./components/MessageListComponent";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -58,6 +59,12 @@ const router = new VueRouter({
             path: '/home',
             name: 'home',
             component: HomeComponent,
+            meta: { authOnly: true }
+        },
+        {
+            path: '/message',
+            name: 'message',
+            component: MessageListComponent,
             meta: { authOnly: true }
         },
         // dashboard
