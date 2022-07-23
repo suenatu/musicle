@@ -29,14 +29,16 @@
                             フォローする
                         </button>
                     </div>
-                    <button
-                        class="btn btn-primary"
-                        type="button"
-                        id="direct_message"
-                        v-on:click="push_direct_message"
-                    >
-                        ダイレクトメッセージ
-                    </button>
+                    <div v-if="!is_me">
+                        <button
+                            class="btn btn-primary"
+                            type="button"
+                            id="direct_message"
+                            v-on:click="push_direct_message"
+                        >
+                            ダイレクトメッセージ
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="col-9"></div>
@@ -58,6 +60,7 @@ export default {
             image_path: null,
             follow_count: 0,
             follower_count: 0,
+            is_me: false,
         };
     },
     created: function () {
@@ -69,8 +72,7 @@ export default {
             return this.$store.getters["auth/is_login"];
         },
     },
-    mounted: function () {
-    },
+    mounted: function () {},
     methods: {
         // フォローAPI
         follow() {
@@ -116,6 +118,7 @@ export default {
                         this.follow_count = response.data.follow_count;
                         this.follower_count = response.data.follower_count;
                         this.is_follow = response.data.is_follow;
+                        this.is_me = response.data.is_me;
                     } else {
                         this.is_user = response.data.is_user;
                     }
@@ -136,12 +139,15 @@ export default {
         // ダイレクトメッセージ画面に遷移
         push_direct_message() {
             axios
-                .post("/api/get_room_id", {
+                .post("/api/get_room", {
                     user_id: this.user_id,
                 })
                 .then((response) => {
                     if (response.data.room_id) {
-                        this.$router.push({ name: 'message', params: { room_id: response.data.room_id } });
+                        this.$router.push({
+                            name: "message",
+                            params: { room_id: response.data.room_id },
+                        });
                     }
                     console.log();
                 })
