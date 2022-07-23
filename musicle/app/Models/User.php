@@ -16,6 +16,11 @@ class User extends Authenticatable
         return $this->hasMany(Message::class);
     }
 
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class);
+    }
+
     /**
      * ログインIDからユーザー情報を取得
      * （TODO: プロフィールテーブルとかくっつけたい）

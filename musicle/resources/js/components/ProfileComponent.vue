@@ -29,13 +29,14 @@
                             フォローする
                         </button>
                     </div>
-                        <button
-                            class="btn btn-primary"
-                            type="button"
-                            id="direct_message"
-                        >
-                            ダイレクトメッセージ
-                        </button>
+                    <button
+                        class="btn btn-primary"
+                        type="button"
+                        id="direct_message"
+                        v-on:click="push_direct_message"
+                    >
+                        ダイレクトメッセージ
+                    </button>
                 </div>
             </div>
             <div class="col-9"></div>
@@ -68,14 +69,15 @@ export default {
             return this.$store.getters["auth/is_login"];
         },
     },
-    mounted: function () {},
+    mounted: function () {
+    },
     methods: {
         // フォローAPI
         follow() {
             this.is_follow = true;
             axios
                 .post("/api/follow", {
-                    user_id: this.user_id
+                    user_id: this.user_id,
                 })
                 .then((response) => {
                     this.follower_count = response.data.follower_count;
@@ -86,13 +88,13 @@ export default {
         },
         //　リムーブAPI
         remove() {
-            if (!confirm('フォローを解除しますか？')) {
+            if (!confirm("フォローを解除しますか？")) {
                 return;
             }
             this.is_follow = false;
             axios
                 .post("/api/remove", {
-                    user_id: this.user_id
+                    user_id: this.user_id,
                 })
                 .then((response) => {
                     this.follower_count = response.data.follower_count;
@@ -127,6 +129,22 @@ export default {
             axios
                 .get("/api/get_is_follow")
                 .then((response) => {})
+                .catch((err) => {
+                    console.error(err);
+                });
+        },
+        // ダイレクトメッセージ画面に遷移
+        push_direct_message() {
+            axios
+                .post("/api/get_room_id", {
+                    user_id: this.user_id,
+                })
+                .then((response) => {
+                    if (response.data.room_id) {
+                        this.$router.push({ name: 'message', params: { room_id: response.data.room_id } });
+                    }
+                    console.log();
+                })
                 .catch((err) => {
                     console.error(err);
                 });

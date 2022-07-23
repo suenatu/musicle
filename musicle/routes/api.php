@@ -30,16 +30,16 @@ Route::post('logout', LogoutController::class)->name('logout');
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // ユーザープロフィール取得API
     Route::get('get_profile/{login_id}', [UserController::class, 'get_profile']);
-
+    // ログインユーザープロフィール情報取得API
     Route::get('get_my_profile', [UserController::class, 'get_my_profile']);
-
     // フォローAPI
     Route::post('follow', [FollowController::class, 'follow']);
     // リムーブAPI
     Route::post('remove', [FollowController::class, 'remove']);
-
     // ルーム一覧取得API
     Route::get('get_rooms', [RoomController::class, 'get_rooms']);
+    // ルームID取得API
+    Route::post('get_room_id', [RoomController::class, 'get_room']);
 });
 
 /**
