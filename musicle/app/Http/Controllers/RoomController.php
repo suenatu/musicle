@@ -28,9 +28,9 @@ class RoomController extends Controller
     }
 
     /**
-     * ルームIDを取得
+     * ルームID取得API
      */
-    public function get_room(Request $request)
+    public function get_room_id(Request $request)
     {
         // ルームIDを取得
         $room_id = Room::get_one_room_id_by_user_id(auth()->user()->id, $request->user_id);
