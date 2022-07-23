@@ -70,7 +70,7 @@ const router = new VueRouter({
         },
         // ダイレクトメッセージ
         {
-            path: '/message/:room_id',
+            path: '/message/:room_no',
             name: 'message',
             component: MessageComponent,
         },

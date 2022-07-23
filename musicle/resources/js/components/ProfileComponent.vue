@@ -143,10 +143,10 @@ export default {
                     user_id: this.user_id,
                 })
                 .then((response) => {
-                    if (response.data.room_id) {
+                    if (response.data.room_no) {
                         this.$router.push({
                             name: "message",
-                            params: { room_id: response.data.room_id },
+                            params: { room_no: response.data.room_no },
                         });
                     }
                     console.log();

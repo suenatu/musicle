@@ -21,7 +21,7 @@ class RoomController extends Controller
                 'name' => $room_user->name,
                 'login_id' => $room_user->login_id,
                 'image_path' => $room_user->image_path,
-                'room_id' => $room_user->room_id,
+                'room_no' => $room_user->room_id,
             ];
         }
         return response()->json($response, Response::HTTP_OK);
@@ -33,18 +33,19 @@ class RoomController extends Controller
     public function get_room(Request $request)
     {
         // ルームIDを取得
-        $room_id = Room::get_one_room_id_by_user_id(auth()->user()->id, $request->user_id);
+        $room_no = Room::get_one_room_id_by_user_id(auth()->user()->id, $request->user_id);
         // ルームIDを返却
-        if (!is_null($room_id)) {
-            return response()->json(['room_id' => $room_id], Response::HTTP_OK);
+        if (!is_null($room_no)) {
+            return response()->json(['room_no' => $room_no], Response::HTTP_OK);
         }
 
         // ルームを作成
-        $room = Room::create(['type' => Room::TYPE_ONE]);
+        $room_no = uniqid(bin2hex(random_bytes(1)));
+        $room = Room::create(['no' => $room_no, 'type' => Room::TYPE_ONE]);
         // 中間テーブルにデータを作成
         $room->users()->attach(auth()->user()->id);
         $room->users()->attach($request->user_id);
         // ルームIDを返却
-        return response()->json(['room_id' => $room->id], Response::HTTP_OK);
+        return response()->json(['room_no' => $room->no], Response::HTTP_OK);
     }
 }

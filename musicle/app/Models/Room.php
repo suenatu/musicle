@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Room extends Model
 {
-    protected $fillable = ['type', 'name'];
+    protected $fillable = ['no', 'type', 'name'];
 
     const TYPE_ONE = 1;
     const TYPE_GROUP = 2;
@@ -15,6 +15,15 @@ class Room extends Model
     public function users()
     {
         return $this->belongsToMany(User::class)->withTimestamps();
+    }
+
+    public static function get_room_id_by_room_no(string $no)
+    {
+        $room = self::where('no', $no)->first();
+        if (!is_null($room)) {
+            return $room->id;
+        }
+        return null;
     }
 
     /**
@@ -42,9 +51,10 @@ class Room extends Model
     /**
      * ルームID取得
      */
-    public static function get_one_room_id_by_user_id(int $user_id, int $target_user_id): ?int
+    public static function get_one_room_id_by_user_id(int $user_id, int $target_user_id)
     {
         $room_user = DB::table('room_user')
+            ->join('rooms', 'rooms.id', '=', 'room_user.room_id')
             ->whereIn(
                 'room_id',
                 function ($query) use ($user_id) {
@@ -60,7 +70,7 @@ class Room extends Model
             ->first();
 
         if (!is_null($room_user)) {
-            return $room_user->room_id;
+            return $room_user->no;
         }
         return null;
     }
