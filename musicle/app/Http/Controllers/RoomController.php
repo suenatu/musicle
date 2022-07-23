@@ -48,4 +48,22 @@ class RoomController extends Controller
         // ルームIDを返却
         return response()->json(['room_no' => $room->no], Response::HTTP_OK);
     }
+
+    /**
+     * ルームのユーザーデータ取得API
+     */
+    public function get_user_data_in_message(Request $request)
+    {
+        $users = Room::where('no', $request->room_no)->first()->users;
+        $response = [];
+        foreach ($users as $user) {
+            $response[] = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'login_id' => $user->login_id,
+                'image_path' => $user->image_path,
+            ];
+        }
+        return response()->json($response, Response::HTTP_OK);
+    }
 }

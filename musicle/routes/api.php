@@ -40,6 +40,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('get_rooms', [RoomController::class, 'get_rooms']);
     // ルームID取得API
     Route::post('get_room', [RoomController::class, 'get_room']);
+    // ルームのユーザーデータ取得API
+    Route::get('get_user_data_in_message/{room_no}', [RoomController::class, 'get_user_data_in_message']);
 });
 
 /**
