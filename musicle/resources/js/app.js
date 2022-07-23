@@ -26,54 +26,69 @@ Vue.use(VueRouter);
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        // 未ログイン時のみ
+        /**
+         * 未ログイン時のみ
+         */
+        // ログイン
         {
             path: '/login',
             name: 'login',
             component: LoginComponent,
             meta: { guestOnly: true }
         },
-        // ログイン認証が不要なページ
-        {
-            path: '/post',
-            name: 'post',
-            component: ExampleComponent,
-        },
-        {
-            path: '/profile/:login_id',
-            name: 'profile',
-            component: ProfileComponent,
-        },
-        {
-            path: '/userlist',
-            name: 'userlist',
-            component: UserListComponent,
-        },
-        {
-            path: '/message/:room_id',
-            name: 'message',
-            component: MessageComponent,
-        },
-        // ログイン認証が必要なページ
+        /**
+         * ログイン認証が必要なページ
+         */
+        // ホーム
         {
             path: '/home',
             name: 'home',
             component: HomeComponent,
             meta: { authOnly: true }
         },
+        // ダイレクトメッセージ一覧
         {
             path: '/message',
-            name: 'message',
+            name: 'messages',
             component: MessageListComponent,
             meta: { authOnly: true }
         },
-        // dashboard
+        /**
+         * ログイン認証が不要なページ
+         */
+        // チャットサンプル
+        {
+            path: '/post',
+            name: 'post',
+            component: ExampleComponent,
+        },
+        // プロフィール
+        {
+            path: '/profile/:login_id',
+            name: 'profile',
+            component: ProfileComponent,
+        },
+        // ダイレクトメッセージ
+        {
+            path: '/message/:room_no',
+            name: 'message',
+            component: MessageComponent,
+        },
+        // ダッシュボード（開発用）
         {
             path: '/',
             name: 'dashboard',
             component: DashboardComponent
         },
-        // 404 not found
+        // ユーザー一覧（開発用）
+        {
+            path: '/userlist',
+            name: 'userlist',
+            component: UserListComponent,
+        },
+        /**
+         * 404 not found
+         */
         {
             path: '*',
             name: 'NotFound',

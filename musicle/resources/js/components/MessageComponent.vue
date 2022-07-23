@@ -54,7 +54,7 @@ export default {
     methods: {
         fetchMessages() {
             axios
-                .get("/messages/" + this.$route.params.room_id)
+                .get("/messages/" + this.$route.params.room_no)
                 .then((response) => {
                     console.log(response.data);
                     this.user_id = response.data.user_id;
@@ -64,7 +64,7 @@ export default {
         postMessage(message) {
             axios
                 .post("/messages", {
-                    room_id: this.$route.params.room_id,
+                    room_no: this.$route.params.room_no,
                     message: this.text,
                 })
                 .then((response) => {

@@ -29,13 +29,16 @@
                             フォローする
                         </button>
                     </div>
+                    <div v-if="!is_me">
                         <button
                             class="btn btn-primary"
                             type="button"
                             id="direct_message"
+                            v-on:click="push_direct_message"
                         >
                             ダイレクトメッセージ
                         </button>
+                    </div>
                 </div>
             </div>
             <div class="col-9"></div>
@@ -57,6 +60,7 @@ export default {
             image_path: null,
             follow_count: 0,
             follower_count: 0,
+            is_me: false,
         };
     },
     created: function () {
@@ -75,7 +79,7 @@ export default {
             this.is_follow = true;
             axios
                 .post("/api/follow", {
-                    user_id: this.user_id
+                    user_id: this.user_id,
                 })
                 .then((response) => {
                     this.follower_count = response.data.follower_count;
@@ -86,13 +90,13 @@ export default {
         },
         //　リムーブAPI
         remove() {
-            if (!confirm('フォローを解除しますか？')) {
+            if (!confirm("フォローを解除しますか？")) {
                 return;
             }
             this.is_follow = false;
             axios
                 .post("/api/remove", {
-                    user_id: this.user_id
+                    user_id: this.user_id,
                 })
                 .then((response) => {
                     this.follower_count = response.data.follower_count;
@@ -114,6 +118,7 @@ export default {
                         this.follow_count = response.data.follow_count;
                         this.follower_count = response.data.follower_count;
                         this.is_follow = response.data.is_follow;
+                        this.is_me = response.data.is_me;
                     } else {
                         this.is_user = response.data.is_user;
                     }
@@ -127,6 +132,25 @@ export default {
             axios
                 .get("/api/get_is_follow")
                 .then((response) => {})
+                .catch((err) => {
+                    console.error(err);
+                });
+        },
+        // ダイレクトメッセージ画面に遷移
+        push_direct_message() {
+            axios
+                .post("/api/get_room", {
+                    user_id: this.user_id,
+                })
+                .then((response) => {
+                    if (response.data.room_no) {
+                        this.$router.push({
+                            name: "message",
+                            params: { room_no: response.data.room_no },
+                        });
+                    }
+                    console.log();
+                })
                 .catch((err) => {
                     console.error(err);
                 });

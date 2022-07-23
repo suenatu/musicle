@@ -63,6 +63,7 @@ class UserController extends Controller
                     'follow_count' => Follow::get_follow_count($user->id),
                     'follower_count' => Follow::get_follower_count($user->id),
                     'is_follow' => Follow::is_follow(auth()->user()->id, $user->id),
+                    'is_me' => $user->id == auth()->user()->id
                 ],
                 Response::HTTP_OK
             );
