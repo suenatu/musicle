@@ -1,25 +1,23 @@
 <template>
     <div class="container">
-        <div>
-            {{}}
-        </div>
-        <div class="chat bg-light p-4">
-            <div
-                v-for="(message, key) in messages"
-                :key="key"
-                class="message d-flex flex-row align-items-start mb-4"
-                v-bind:class="[
-                    message.user.id == user_id
-                        ? 'flex-row-reverse'
-                        : 'flex-row',
-                ]"
-            >
-                <div>{{ get_user_name(message.user.id) }}</div>
-                <img
-                    :src="get_user_image(message.user.id)"
-                    class="header-profile-image"
-                />
-                <!-- <div
+        <div class="row">
+            <div class="chat bg-light p-4">
+                <div
+                    v-for="(message, key) in messages"
+                    :key="key"
+                    class="message d-flex flex-row align-items-start mb-4"
+                    v-bind:class="[
+                        message.user.id == user_id
+                            ? 'flex-row-reverse'
+                            : 'flex-row',
+                    ]"
+                >
+                    <div>{{ get_user_name(message.user.id) }}</div>
+                    <img
+                        :src="get_user_image(message.user.id)"
+                        class="header-profile-image"
+                    />
+                    <!-- <div
                     class="
                         message-icon
                         rounded-circle
@@ -30,25 +28,26 @@
                 >
                     <i class="fas fa-user"></i>
                 </div> -->
-                <p
-                    class="message-text p-2 mb-0"
-                    v-bind:class="[
-                        message.user.id == user_id
-                            ? 'bg-info me-2'
-                            : 'bg-warning ms-2',
-                    ]"
+                    <p
+                        class="message-text p-2 mb-0"
+                        v-bind:class="[
+                            message.user.id == user_id
+                                ? 'bg-info me-2'
+                                : 'bg-warning ms-2',
+                        ]"
+                    >
+                        {{ message.message }}
+                    </p>
+                </div>
+                <textarea v-model="text" class="input-text"></textarea>
+                <button
+                    @click="postMessage"
+                    :disabled="!textExists"
+                    class="send-btn"
                 >
-                    {{ message.message }}
-                </p>
+                    送信
+                </button>
             </div>
-            <textarea v-model="text" class="input-text"></textarea>
-            <button
-                @click="postMessage"
-                :disabled="!textExists"
-                class="send-btn"
-            >
-                送信
-            </button>
         </div>
     </div>
 </template>

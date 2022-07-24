@@ -49,7 +49,7 @@ const router = new VueRouter({
         // ダイレクトメッセージ一覧
         {
             path: '/message',
-            name: 'messages',
+            name: 'message',
             component: MessageListComponent,
             meta: { authOnly: true }
         },
