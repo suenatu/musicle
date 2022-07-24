@@ -21,7 +21,7 @@ class RoomController extends Controller
                 'name' => $room_user->name,
                 'login_id' => $room_user->login_id,
                 'image_path' => $room_user->image_path,
-                'room_no' => $room_user->room_id,
+                'room_no' => $room_user->no,
             ];
         }
         return response()->json($response, Response::HTTP_OK);

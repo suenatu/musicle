@@ -32,7 +32,14 @@ class Room extends Model
     public static function get_rooms(int $user_id)
     {
         $room_user = DB::table('room_user')
+            ->select([
+                'users.name',
+                'users.login_id',
+                'users.image_path',
+                'rooms.no'
+            ])
             ->join('users', 'room_user.user_id', '=', 'users.id')
+            ->join('rooms', 'rooms.id', '=', 'room_user.room_id')
             ->whereIn(
                 'room_id',
                 function ($query) use ($user_id) {

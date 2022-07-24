@@ -5,7 +5,7 @@
                 <router-link
                     :to="{
                         name: 'message',
-                        params: { room_id: rooms.room_id },
+                        params: { room_no: rooms.room_no },
                     }"
                     >{{ rooms.name }}</router-link
                 >
