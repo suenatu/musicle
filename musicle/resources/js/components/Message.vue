@@ -25,7 +25,7 @@
             </p>
         </div>
         <textarea v-model="text" class="input-text"></textarea>
-        <button @click="postMessage" :disabled="!textExists" class="send-btn">
+        <button @click="send_message" :disabled="!textExists" class="send-btn">
             送信
         </button>
     </div>
@@ -50,17 +50,17 @@ export default {
     watch: {
         room_no(newHoge, oldHoge) {
             // メッセージ取得
-            this.fetchMessages();
+            this.fetch_messages();
             // ユーザーデータ取得
             this.getUsersData();
         },
     },
     mounted() {
         // メッセージ取得
-        this.fetchMessages();
+        this.fetch_messages();
         // ユーザーデータ取得
         this.getUsersData();
-
+        // メッセージ受信
         Echo.private("chat").listen("MessageSent", (e) => {
             this.messages.push({
                 message: e.message.message,
@@ -69,16 +69,18 @@ export default {
         });
     },
     methods: {
-        fetchMessages() {
-            axios.get("/messages/" + this.room_no).then((response) => {
+        // メッセージ一覧取得API
+        fetch_messages() {
+            axios.get("/fetch_messages/" + this.room_no).then((response) => {
                 console.log(response.data);
                 this.user_id = response.data.user_id;
                 this.messages = response.data.messages;
             });
         },
-        postMessage(message) {
+        // メッセージ送信API
+        send_message(message) {
             axios
-                .post("/messages", {
+                .post("/send_messages", {
                     room_no: this.room_no,
                     message: this.text,
                 })
@@ -86,7 +88,7 @@ export default {
                     this.text = "";
                 });
         },
-        // ユーザーデータ取得
+        // ユーザーデータ取得API
         getUsersData() {
             axios
                 .get("/api/get_user_data_in_message/" + this.room_no)

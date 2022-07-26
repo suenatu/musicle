@@ -7,6 +7,9 @@
                         v-for="(room, key) in rooms"
                         :key="key"
                         v-on:click="push_message(room.room_no)"
+                        v-bind:class="[
+                            selected_room_no == room.room_no ? 'selected' : '',
+                        ]"
                     >
                         <img :src="room.image_path" class="user-image" />
                         {{ room.name }} @{{ room.login_id }}
@@ -32,12 +35,13 @@ export default {
     data: function () {
         return {
             rooms: [],
-            selected_room_no: '',
+            selected_room_no: "",
         };
     },
     created: function () {
         // メッセージ一覧取得
         this.get_rooms();
+        this.selected_room_no = this.$route.params.room_no;
     },
     methods: {
         // メッセージ一覧取得API
@@ -54,7 +58,13 @@ export default {
         },
         // メッセージへ画面遷移
         push_message(room_no) {
-            this.selected_room_no = room_no;
+            if (this.selected_room_no !== room_no) {
+                this.selected_room_no = room_no;
+                this.$router.push({
+                    name: "message",
+                    params: { room_no: room_no },
+                });
+            }
         },
     },
 };
@@ -70,10 +80,14 @@ export default {
     list-style: none;
 }
 
+.selected {
+    background-color: #d0d0d0;
+}
+
 /* マウスオーバーでの背景色の設定 ここから */
 .user_list li:hover {
     cursor: pointer;
-    background-color: #f0f0f0;
+    background-color: #d0d0d0;
 }
 
 /**　リストの罫線 */

@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MessageController;
 
-Route::get('messages/{room_no}', [MessageController::class, 'fetchMessages']);
-Route::post('messages', [MessageController::class, 'sendMessage']);
+Route::get('fetch_messages/{room_no}', [MessageController::class, 'fetch_messages']);
+Route::post('send_messages', [MessageController::class, 'send_message']);
 
 Route::get('/{any}', function() {
     return view('app');

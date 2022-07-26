@@ -7,8 +7,6 @@ import HomeComponent from "./components/HomeComponent";
 import LoginComponent from "./components/LoginComponent";
 import DashboardComponent from "./components/DashboardComponent";
 import NotFoundComponent from "./components/NotFoundComponent";
-import ExampleComponent from "./components/ExampleComponent";
-import MessageComponent from "./components/MessageComponent";
 import MessageListComponent from "./components/MessageListComponent";
 
 /**
@@ -49,6 +47,13 @@ const router = new VueRouter({
         // ダイレクトメッセージ一覧
         {
             path: '/message',
+            name: 'messages',
+            component: MessageListComponent,
+            meta: { authOnly: true }
+        },
+        // ダイレクトメッセージ
+        {
+            path: '/message/:room_no',
             name: 'message',
             component: MessageListComponent,
             meta: { authOnly: true }
@@ -56,23 +61,11 @@ const router = new VueRouter({
         /**
          * ログイン認証が不要なページ
          */
-        // チャットサンプル
-        {
-            path: '/post',
-            name: 'post',
-            component: ExampleComponent,
-        },
         // プロフィール
         {
             path: '/profile/:login_id',
             name: 'profile',
             component: ProfileComponent,
-        },
-        // ダイレクトメッセージ
-        {
-            path: '/message/:room_no',
-            name: 'message',
-            component: MessageComponent,
         },
         // ダッシュボード（開発用）
         {

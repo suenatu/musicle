@@ -22,7 +22,7 @@ class MessageController extends Controller
         return view('message');
     }
 
-    public function fetchMessages(Request $request)
+    public function fetch_messages(Request $request)
     {
         $room_id = Room::get_room_id_by_room_no($request->room_no);
         $messages = Message::where(['room_id' => $room_id])
@@ -33,7 +33,7 @@ class MessageController extends Controller
         ];
     }
 
-    public function sendMessage(Request $request)
+    public function send_message(Request $request)
     {
         $room_id = Room::get_room_id_by_room_no($request->room_no);
         $user = User::find(auth()->user()->id);
