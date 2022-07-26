@@ -19,6 +19,7 @@ class RoomController extends Controller
         foreach ($room_users as $room_user) {
             $response[] = [
                 'name' => $room_user->name,
+                'user_id' => $room_user->id,
                 'login_id' => $room_user->login_id,
                 'image_path' => $room_user->image_path,
                 'room_no' => $room_user->no,

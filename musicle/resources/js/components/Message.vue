@@ -1,39 +1,50 @@
 <template>
-    <div class="chat bg-light p-4">
-        <div
-            v-for="(message, key) in messages"
-            :key="key"
-            class="message d-flex flex-row align-items-start mb-4"
-            v-bind:class="[
-                message.user.id == user_id ? 'flex-row-reverse' : 'flex-row',
-            ]"
-        >
-            <div>{{ get_user_name(message.user.id) }}</div>
-            <img
-                :src="get_user_image(message.user.id)"
-                class="header-profile-image"
-            />
-            <p
-                class="message-text p-2 mb-0"
+    <div>
+        <div class="header">
+            {{ get_user_name(selected_user_id) }} @{{ get_user_login_id(selected_user_id) }}
+        </div>
+        <div class="chat bg-light p-4">
+            <div
+                v-for="(message, key) in messages"
+                :key="key"
+                class="message d-flex flex-row align-items-start mb-4"
                 v-bind:class="[
                     message.user.id == user_id
-                        ? 'bg-info me-2'
-                        : 'bg-warning ms-2',
+                        ? 'flex-row-reverse'
+                        : 'flex-row',
                 ]"
             >
-                {{ message.message }}
-            </p>
+                <div>{{ get_user_name(message.user.id) }}</div>
+                <img
+                    :src="get_user_image(message.user.id)"
+                    class="header-profile-image"
+                />
+                <p
+                    class="message-text p-2 mb-0"
+                    v-bind:class="[
+                        message.user.id == user_id
+                            ? 'bg-info me-2'
+                            : 'bg-warning ms-2',
+                    ]"
+                >
+                    {{ message.message }}
+                </p>
+            </div>
+            <textarea v-model="text" class="input-text"></textarea>
+            <button
+                @click="send_message"
+                :disabled="!textExists"
+                class="send-btn"
+            >
+                送信
+            </button>
         </div>
-        <textarea v-model="text" class="input-text"></textarea>
-        <button @click="send_message" :disabled="!textExists" class="send-btn">
-            送信
-        </button>
     </div>
 </template>
 
 <script>
 export default {
-    props: ["room_no"],
+    props: ["room_no", "selected_user_id"],
     data() {
         return {
             user_id: null,
@@ -66,11 +77,14 @@ export default {
                 message: e.message.message,
                 user: e.user,
             });
+            // ルーム一覧再取得
+            this.$emit('get_rooms');
         });
     },
     methods: {
         // メッセージ一覧取得API
         fetch_messages() {
+            console.log('fetch_messages');
             axios.get("/fetch_messages/" + this.room_no).then((response) => {
                 console.log(response.data);
                 this.user_id = response.data.user_id;
@@ -87,6 +101,8 @@ export default {
                 .then((response) => {
                     this.text = "";
                 });
+            // ルーム一覧再取得
+            this.$emit('get_rooms');
         },
         // ユーザーデータ取得API
         getUsersData() {
@@ -111,6 +127,14 @@ export default {
             for (let i = 0; i < this.user_data.length; i++) {
                 if (this.user_data[i].id == user_id) {
                     return this.user_data[i].image_path;
+                }
+            }
+        },
+        // ユーザーログインID取得
+        get_user_login_id(user_id) {
+            for (let i = 0; i < this.user_data.length; i++) {
+                if (this.user_data[i].id == user_id) {
+                    return this.user_data[i].login_id;
                 }
             }
         },

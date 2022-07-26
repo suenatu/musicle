@@ -6,7 +6,7 @@
                     <li
                         v-for="(room, key) in rooms"
                         :key="key"
-                        v-on:click="push_message(room.room_no)"
+                        v-on:click="push_message(room)"
                         v-bind:class="[
                             selected_room_no == room.room_no ? 'selected' : '',
                         ]"
@@ -20,6 +20,8 @@
                 <Message
                     v-if="selected_room_no"
                     :room_no="selected_room_no"
+                    :selected_user_id="selected_user_id"
+                    @get_rooms="get_rooms"
                 ></Message>
             </div>
         </div>
@@ -36,6 +38,7 @@ export default {
         return {
             rooms: [],
             selected_room_no: "",
+            selected_user_id: null,
         };
     },
     created: function () {
@@ -46,6 +49,7 @@ export default {
     methods: {
         // メッセージ一覧取得API
         get_rooms() {
+            console.log('get_rooms');
             axios
                 .get("/api/get_rooms", {})
                 .then((response) => {
@@ -57,12 +61,13 @@ export default {
                 });
         },
         // メッセージへ画面遷移
-        push_message(room_no) {
-            if (this.selected_room_no !== room_no) {
-                this.selected_room_no = room_no;
+        push_message(room) {
+            if (this.selected_room_no !== room.room_no) {
+                this.selected_room_no = room.room_no;
+                this.selected_user_id = room.user_id;
                 this.$router.push({
                     name: "message",
-                    params: { room_no: room_no },
+                    params: { room_no: room.room_no },
                 });
             }
         },
@@ -70,6 +75,7 @@ export default {
 };
 </script>
 <style>
+/** ユーザーアイコン */
 .user-image {
     max-width: 50px;
     max-height: 50px;
@@ -80,7 +86,8 @@ export default {
     list-style: none;
 }
 
-.selected {
+/** 選択中のリスト */
+li.selected {
     background-color: #d0d0d0;
 }
 
@@ -95,7 +102,6 @@ ul.user_list li:first-child {
     border-top: 1px solid hsl(0, 0%, 75%);
     border-bottom: 1px solid hsl(0, 0%, 75%);
 }
-
 ul.user_list li + li {
     border-bottom: 1px solid hsl(0, 0%, 75%);
 }

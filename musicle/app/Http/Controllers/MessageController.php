@@ -24,8 +24,8 @@ class MessageController extends Controller
 
     public function fetch_messages(Request $request)
     {
-        $room_id = Room::get_room_id_by_room_no($request->room_no);
-        $messages = Message::where(['room_id' => $room_id])
+        $room = Room::get_room_by_room_no($request->room_no);
+        $messages = Message::where(['room_id' => $room->id])
             ->with('user')->get();
         return [
             'user_id' => auth()->user()->id,
@@ -35,10 +35,12 @@ class MessageController extends Controller
 
     public function send_message(Request $request)
     {
-        $room_id = Room::get_room_id_by_room_no($request->room_no);
+        $room = Room::get_room_by_room_no($request->room_no);
+        $room->message_received_at = date('Y-m-d H:i:s');
+        $room->save();
         $user = User::find(auth()->user()->id);
         $message = $user->messages()->create([
-            'room_id' => $room_id,
+            'room_id' => $room->id,
             'message' => $request->message
         ]);
 

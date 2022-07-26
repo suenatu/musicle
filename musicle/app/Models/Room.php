@@ -17,13 +17,9 @@ class Room extends Model
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
-    public static function get_room_id_by_room_no(string $no)
+    public static function get_room_by_room_no(string $no)
     {
-        $room = self::where('no', $no)->first();
-        if (!is_null($room)) {
-            return $room->id;
-        }
-        return null;
+        return self::where('no', $no)->first();
     }
 
     /**
@@ -33,6 +29,7 @@ class Room extends Model
     {
         $room_user = DB::table('room_user')
             ->select([
+                'users.id',
                 'users.name',
                 'users.login_id',
                 'users.image_path',
@@ -51,6 +48,7 @@ class Room extends Model
                 }
             )
             ->where('room_user.user_id', '<>', $user_id)
+            ->orderBy('rooms.message_received_at', 'desc')
             ->get();
         return $room_user;
     }
