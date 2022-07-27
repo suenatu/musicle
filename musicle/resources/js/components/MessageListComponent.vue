@@ -8,7 +8,9 @@
                         :key="key"
                         v-on:click="push_message(room)"
                         v-bind:class="[
-                            selected_room_no == room.room_no ? 'selected' : '',
+                            selected_room_data.room_no == room.room_no
+                                ? 'selected'
+                                : '',
                         ]"
                     >
                         <img :src="room.image_path" class="user-image" />
@@ -18,9 +20,8 @@
             </div>
             <div class="col-8">
                 <Message
-                    v-if="selected_room_no"
-                    :room_no="selected_room_no"
-                    :selected_user_id="selected_user_id"
+                    v-if="selected_room_data.room_no"
+                    :selected_room_data="selected_room_data"
                     @get_rooms="get_rooms"
                 ></Message>
             </div>
@@ -37,24 +38,30 @@ export default {
     data: function () {
         return {
             rooms: [],
-            selected_room_no: "",
-            selected_user_id: null,
+            selected_room_data: {
+                room_no: null,
+                user_id: null,
+            },
         };
     },
     created: function () {
         // メッセージ一覧取得
         this.get_rooms();
-        this.selected_room_no = this.$route.params.room_no;
     },
     methods: {
         // メッセージ一覧取得API
         get_rooms() {
-            console.log('get_rooms');
             axios
                 .get("/api/get_rooms", {})
                 .then((response) => {
                     console.log(response.data);
                     this.rooms = response.data;
+
+                    // クエリパラメータ付きであれば該当するメッセージを表示
+                    this.update_room_data(
+                        this.$route.params.room_no,
+                        this.get_selected_user_id(this.$route.params.room_no)
+                    );
                 })
                 .catch((err) => {
                     console.error(err);
@@ -62,14 +69,29 @@ export default {
         },
         // メッセージへ画面遷移
         push_message(room) {
-            if (this.selected_room_no !== room.room_no) {
-                this.selected_room_no = room.room_no;
-                this.selected_user_id = room.user_id;
+            if (this.selected_room_data.room_no !== room.room_no) {
                 this.$router.push({
                     name: "message",
                     params: { room_no: room.room_no },
                 });
+                // 選択ルームデータ更新
+                this.update_room_data(
+                    room.room_no,
+                    this.get_selected_user_id(room.room_no)
+                );
             }
+        },
+        // ルームNOから選択されたユーザーを選択
+        get_selected_user_id(room_no) {
+            for (let i = 0; i < this.rooms.length; i++) {
+                if (this.rooms[i].room_no == room_no) {
+                    return this.rooms[i].user_id;
+                }
+            }
+        },
+        update_room_data(room_no, user_id) {
+            this.selected_room_data.room_no = room_no;
+            this.selected_room_data.user_id = user_id;
         },
     },
 };

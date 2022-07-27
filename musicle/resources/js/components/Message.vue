@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header">
-            {{ get_user_name(selected_user_id) }} @{{ get_user_login_id(selected_user_id) }}
+            {{ get_one_user_name() }} @{{ get_one_login_id() }}
         </div>
         <div class="chat bg-light p-4">
             <div
@@ -44,13 +44,14 @@
 
 <script>
 export default {
-    props: ["room_no", "selected_user_id"],
+    props: ["selected_room_data"],
     data() {
         return {
             user_id: null,
             text: "",
             messages: [],
             user_data: [],
+            is_one_room: true,
         };
     },
     computed: {
@@ -59,11 +60,14 @@ export default {
         },
     },
     watch: {
-        room_no(newHoge, oldHoge) {
-            // メッセージ取得
-            this.fetch_messages();
-            // ユーザーデータ取得
-            this.getUsersData();
+        selected_room_data: {
+            handler: function (val, oldVal) {
+                // メッセージ取得
+                this.fetch_messages();
+                // ユーザーデータ取得
+                this.getUsersData();
+            },
+            deep: true,
         },
     },
     mounted() {
@@ -78,36 +82,40 @@ export default {
                 user: e.user,
             });
             // ルーム一覧再取得
-            this.$emit('get_rooms');
+            this.$emit("get_rooms");
         });
     },
     methods: {
         // メッセージ一覧取得API
         fetch_messages() {
-            console.log('fetch_messages');
-            axios.get("/fetch_messages/" + this.room_no).then((response) => {
-                console.log(response.data);
-                this.user_id = response.data.user_id;
-                this.messages = response.data.messages;
-            });
+            axios
+                .get("/fetch_messages/" + this.selected_room_data.room_no)
+                .then((response) => {
+                    console.log(response.data);
+                    this.user_id = response.data.user_id;
+                    this.messages = response.data.messages;
+                });
         },
         // メッセージ送信API
         send_message(message) {
             axios
                 .post("/send_messages", {
-                    room_no: this.room_no,
+                    room_no: this.selected_room_data.room_no,
                     message: this.text,
                 })
                 .then((response) => {
                     this.text = "";
                 });
             // ルーム一覧再取得
-            this.$emit('get_rooms');
+            this.$emit("get_rooms");
         },
         // ユーザーデータ取得API
         getUsersData() {
             axios
-                .get("/api/get_user_data_in_message/" + this.room_no)
+                .get(
+                    "/api/get_user_data_in_message/" +
+                        this.selected_room_data.room_no
+                )
                 .then((response) => {
                     this.user_data = response.data.map((user) => user);
                     console.log(response.data);
@@ -134,6 +142,21 @@ export default {
         get_user_login_id(user_id) {
             for (let i = 0; i < this.user_data.length; i++) {
                 if (this.user_data[i].id == user_id) {
+                    return this.user_data[i].login_id;
+                }
+            }
+        },
+
+        get_one_user_name() {
+            for (let i = 0; i < this.user_data.length; i++) {
+                if (this.user_data[i].id == this.selected_room_data.user_id) {
+                    return this.user_data[i].name;
+                }
+            }
+        },
+        get_one_login_id() {
+            for (let i = 0; i < this.user_data.length; i++) {
+                if (this.user_data[i].id == this.selected_room_data.user_id) {
                     return this.user_data[i].login_id;
                 }
             }
