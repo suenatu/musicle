@@ -52,7 +52,7 @@ export default {
         // メッセージ一覧取得API
         get_rooms() {
             axios
-                .get("/api/get_rooms", {})
+                .get("/api/get_rooms")
                 .then((response) => {
                     console.log(response.data);
                     this.rooms = response.data;
@@ -89,6 +89,7 @@ export default {
                 }
             }
         },
+        // ルームデータを更新
         update_room_data(room_no, user_id) {
             this.selected_room_data.room_no = room_no;
             this.selected_room_data.user_id = user_id;

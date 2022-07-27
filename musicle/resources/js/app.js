@@ -1,13 +1,13 @@
 import VueRouter from 'vue-router';
 import store from "./store/index";
-import HeaderComponent from "./components/HeaderComponent";
-import UserListComponent from "./components/UserListComponent";
-import ProfileComponent from "./components/ProfileComponent";
-import HomeComponent from "./components/HomeComponent";
-import LoginComponent from "./components/LoginComponent";
-import DashboardComponent from "./components/DashboardComponent";
-import NotFoundComponent from "./components/NotFoundComponent";
-import MessageListComponent from "./components/MessageListComponent";
+import Header from "./components/Header";
+import Users from "./components/Users";
+import Profile from "./components/Profile";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import NotFound from "./components/NotFound";
+import Messages from "./components/Messages";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -31,7 +31,7 @@ const router = new VueRouter({
         {
             path: '/login',
             name: 'login',
-            component: LoginComponent,
+            component: Login,
             meta: { guestOnly: true }
         },
         /**
@@ -41,21 +41,21 @@ const router = new VueRouter({
         {
             path: '/home',
             name: 'home',
-            component: HomeComponent,
+            component: Home,
             meta: { authOnly: true }
         },
         // ダイレクトメッセージ一覧
         {
             path: '/message',
             name: 'messages',
-            component: MessageListComponent,
+            component: Messages,
             meta: { authOnly: true }
         },
         // ダイレクトメッセージ
         {
             path: '/message/:room_no',
             name: 'message',
-            component: MessageListComponent,
+            component: Messages,
             meta: { authOnly: true }
         },
         /**
@@ -65,19 +65,19 @@ const router = new VueRouter({
         {
             path: '/profile/:login_id',
             name: 'profile',
-            component: ProfileComponent,
+            component: Profile,
         },
         // ダッシュボード（開発用）
         {
             path: '/',
             name: 'dashboard',
-            component: DashboardComponent
+            component: Dashboard
         },
         // ユーザー一覧（開発用）
         {
             path: '/userlist',
             name: 'userlist',
-            component: UserListComponent,
+            component: Users,
         },
         /**
          * 404 not found
@@ -85,7 +85,7 @@ const router = new VueRouter({
         {
             path: '*',
             name: 'NotFound',
-            component: NotFoundComponent
+            component: NotFound
         },
     ]
 });
@@ -101,7 +101,7 @@ const router = new VueRouter({
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('header-component', HeaderComponent);
+Vue.component('header-component', Header);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
