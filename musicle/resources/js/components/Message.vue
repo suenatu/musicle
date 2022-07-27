@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <div class="header">
+    <div class="content">
+        <div class="header p-3">
             {{ get_one_user_name() }} @{{ get_one_login_id() }}
         </div>
-        <div class="chat bg-light p-4">
+        <div class="body p-3">
             <div
                 v-for="(message, key) in messages"
                 :key="key"
@@ -30,14 +30,26 @@
                     {{ message.message }}
                 </p>
             </div>
-            <textarea v-model="text" class="input-text"></textarea>
+        </div>
+        <div class="footer p-3">
+            <div class="row">
+                <div class="col-10">
+                    <textarea
+                        v-model="text"
+                        class="form-control input-text"
+                    ></textarea>
+                </div>
+                <div class="col-2">
             <button
                 @click="send_message"
                 :disabled="!textExists"
-                class="send-btn"
+                class="btn btn-primary send-btn"
             >
                 送信
             </button>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
@@ -76,7 +88,7 @@ export default {
         // ユーザーデータ取得
         this.getUsersData();
         // メッセージ受信
-        Echo.private("chat").listen("MessageSent", (e) => {
+        Echo.private("message").listen("MessageSent", (e) => {
             this.messages.push({
                 message: e.message.message,
                 user: e.user,
@@ -165,9 +177,22 @@ export default {
 };
 </script>
 <style>
-.chat {
-    max-width: 600px;
-    margin: 0 auto;
+.content {
+    width: 100%;
+}
+
+.header {
+    text-align: center;
+}
+
+.body {
+    height: 600px;
+    overflow: scroll;
+}
+
+.footer {
+    background-color: #89c7de;
+    /* color: #fff; */
 }
 
 .message-icon {
@@ -183,9 +208,11 @@ export default {
     border-radius: 0.3rem;
 }
 .input-text {
-    width: 80%;
+    width: 100%;
+    height: 100%;
 }
 .send-btn {
-    width: 10%;
+    width: 100%;
+    height: 100%;
 }
 </style>
