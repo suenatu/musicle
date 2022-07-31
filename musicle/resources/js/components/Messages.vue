@@ -48,6 +48,7 @@ export default {
         // メッセージ一覧取得
         this.get_rooms();
     },
+    mounted() {},
     methods: {
         // メッセージ一覧取得API
         get_rooms() {
@@ -98,29 +99,30 @@ export default {
 };
 </script>
 <style>
-/** ユーザーアイコン */
+/* ユーザーアイコン */
 .user-image {
     max-width: 50px;
     max-height: 50px;
 }
 
-/** リストの中黒を削除 */
+.user_list {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+/* リストの中黒を削除 */
 .user_list li {
     list-style: none;
 }
-
-/** 選択中のリスト */
+/* 選択中のリスト */
 li.selected {
     background-color: #d0d0d0;
 }
-
-/* マウスオーバーでの背景色の設定 ここから */
+/* マウスオーバー */
 .user_list li:hover {
     cursor: pointer;
     background-color: #d0d0d0;
 }
-
-/**　リストの罫線 */
+/*　リストの罫線 */
 ul.user_list li:first-child {
     border-top: 1px solid hsl(0, 0%, 75%);
     border-bottom: 1px solid hsl(0, 0%, 75%);
