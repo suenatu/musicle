@@ -3,6 +3,7 @@
 ## 環境構築(Docker)
 
 ### Windows
+<<<<<<< Updated upstream
 #### **WSL2の有効化**
 1. 管理者コマンドプロンプトを起動
 2. WSL2を有効にする(以下を入力)<br>
@@ -14,7 +15,8 @@
 
 #### **Dokcer Desktopのインストール**
 1. [Docker Desktop公式ページ](https://www.docker.com/products/docker-desktop/)へアクセス
-2. ターミナルを起動
+2. Dockerに接続  
+
 
 ### Mac
 
@@ -27,12 +29,21 @@ e.g.) `$ docker build -t musicle_server_image ./`
 - コンテナの作成、起動
     - 複数コンテナの場合
     `$ docker-compose up -d`
+<<<<<<< Updated upstream
     - 単数コンテナの場合
     `$ docker run --name <コンテナの名前> -it <イメージの名前> /bin/bash`
     e.g.) `$docker run --name musicle_server -it musicle_server_image /bin/bash`
     e.g.) `docker run -it --rm --name musicle_server musicle_server_image` (コンテナを停止した時にコンテナを消してくれる)
 - コンテナの起動
 `$ docker start <CONTAINER ID>`
+=======
+    - 単数コンテナの場合  
+    `$ docker run --name <コンテナの名前> -it <イメージの名前> /bin/bash`  
+    e.g.) `$ docker run --name musicle_server -it musicle_server_image /bin/bash`  
+    e.g.) `$ docker run -it --rm --name musicle_server musicle_server_image /bin/bash` (コンテナを停止した時にコンテナを消してくれる)  
+- コンテナの起動  
+`$ docker start <CONTAINER ID>`  
+>>>>>>> Stashed changes
 `$ docker exec -it <CONTAINER ID>/<NAME> bash`
 - コンテナから抜ける(起動したまま)
 `Ctrl + P, Q`
@@ -67,7 +78,7 @@ e.g.) `$ docker build -t musicle_server_image ./`
 ## Windows - Docker間ファイル共有
 ### Windows→Docker
 1. エクスプローラー起動
-2. パス欄に「\\wsl$」を入力
+2. パス欄に「\\\wsl$」を入力
 3. Dockerを選択
 ### Linux→Windows
 1. /mnt/c/xxx... or /mnt/d/xxx... (Windows側の見たいファイルのディレクトリまでのパスを記述)
