@@ -79,4 +79,19 @@ class Room extends Model
         }
         return null;
     }
+
+    /**
+     * ルームユーザー所属チェック
+     */
+    public static function is_room_user(int $room_id, int $user_id)
+    {
+        $room_user = DB::table('room_user')
+            ->where(['room_id' => $room_id, 'user_id' => $user_id])
+            ->first();
+
+        if (is_null($room_user)) {
+            return false;
+        }
+        return true;
+    }
 }

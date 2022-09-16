@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Broadcast::channel('message', function ($user) {
+// Broadcast::channel('message', function ($user) {
+//     return Auth::check();
+// });
+Broadcast::channel('message.{room_no}', function ($user) {
     return Auth::check();
 });
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {

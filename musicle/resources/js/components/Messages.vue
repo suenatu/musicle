@@ -55,7 +55,7 @@ export default {
             axios
                 .get("/api/get_rooms")
                 .then((response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     this.rooms = response.data;
 
                     // クエリパラメータ付きであれば該当するメッセージを表示

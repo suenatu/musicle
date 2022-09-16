@@ -85,18 +85,24 @@ export default {
         },
     },
     mounted() {
+        console.log("mounted!!!");
         // メッセージ取得
         this.fetch_messages();
         // ユーザーデータ取得
         this.getUsersData();
         // メッセージ受信
-        Echo.private("message").listen("MessageSent", (e) => {
+        Echo.private(`message.${this.selected_room_data.room_no}`).listen("MessageSent", (e) => {
+            console.log(e)
             this.messages.push({
                 message: e.message.message,
                 user: e.user,
             });
             // ルーム一覧再取得
             this.$emit("get_rooms");
+            // 画面下にスクロール
+            this.$nextTick(function () {
+                this.scroll_to_buttom();
+            });
         });
 
         // 画面下にスクロール
@@ -127,7 +133,7 @@ export default {
                 .then((response) => {
                     this.text = "";
                     // ルーム一覧再取得
-                    this.$emit("get_rooms");
+                    // this.$emit("get_rooms");
                     // 画面下にスクロール
                     this.$nextTick(function () {
                         this.scroll_to_buttom();
@@ -143,7 +149,7 @@ export default {
                 )
                 .then((response) => {
                     this.user_data = response.data.map((user) => user);
-                    console.log(response.data);
+                    // console.log(response.data);
                 });
         },
 
@@ -197,7 +203,7 @@ export default {
         },
         // 画面下にスクロール
         scroll_to_buttom() {
-            console.log("scroll_to_buttom");
+            // console.log("scroll_to_buttom");
             // スクロールを画面下に移動
             const message_body = document.getElementById("message_body");
             // スクロールバーの位置をリストの最下部に設定

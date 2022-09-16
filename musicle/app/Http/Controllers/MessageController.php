@@ -25,6 +25,14 @@ class MessageController extends Controller
     public function fetch_messages(Request $request)
     {
         $room = Room::get_room_by_room_no($request->room_no);
+
+        // ユーザーがルームに属するかチェック
+        $is_room_user = Room::is_room_user($room->id, auth()->user()->id);
+        if (!$is_room_user) {
+            // TODO: レスポンスを決める
+            return;
+        }
+
         $messages = Message::where(['room_id' => $room->id])
             ->with('user')->get();
         return [
@@ -44,7 +52,7 @@ class MessageController extends Controller
             'message' => $request->message
         ]);
 
-        event(new MessageSent($user, $message));
+        event(new MessageSent($user, $message, $room));
 
         return ['status' => 'Message Sent!'];
     }
